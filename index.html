@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jokenpô</title>
+    <style>
+      h1 {
+        color: pink;
+        font-size: 40px;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        text-align: center;
+        padding-top: 20px;
+      }
+      .table {
+        background-color: rgb(243, 243, 243);
+        display: flex;
+        margin: 0 auto;
+        align-items: center;
+        padding: 50px;
+        margin-top: 50px;
+        width: 400px;
+        height: 310px;
+        border-radius: 50px;
+        -webkit-box-shadow: -9px 5px 15px 5px #ffe488,
+          -7px -5px 15px 5px #8cff85, 12px -5px 15px 5px #80c7ff,
+          12px 10px 15px 7px #e488ff, -10px 10px 15px 7px #ff616b,
+          -10px -7px 27px 1px #8e5cff, 6px 3px 15px 5px rgba(0, 0, 0, 0);
+        box-shadow: -9px 5px 15px 5px #ffe488, -7px -5px 15px 5px #8cff85,
+          12px -5px 15px 5px #80c7ff, 12px 10px 15px 7px #e488ff,
+          -10px 10px 15px 7px #ff616b, -10px -7px 27px 1px #8e5cff,
+          6px 3px 15px 5px rgba(0, 0, 0, 0);
+        flex-direction: column;
+      }
+
+      .result {
+        display: flex;
+        text-align: center;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        font-size: 20px;
+        color: green;
+        height: 80px;
+        line-height: 80px;
+      }
+
+      img {
+        height: 80px;
+        width: 80px;
+        align-items: center;
+        justify-content: space-between;
+        margin: 15px;
+      }
+
+      #btnScissor {
+        border-style: none;
+        background-color: transparent;
+      }
+
+      #btnPaper {
+        border-style: none;
+        background-color: transparent;
+      }
+
+      #btnStone {
+        border-style: none;
+        background-color: transparent;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Jokenpô</h1>
+    <div class="table">
+      <div class="computer">
+        <img id="pcScissor" src="./assets/images/computer.png" alt="surprise" />
+        <img id="pcPaper" src="./assets/images/computer.png" alt="surprise" />
+        <img id="pcStone" src="./assets/images/computer.png" alt="surprise" />
+      </div>
+
+      <div id="result" class="result">VS</div>
+
+      <div class="user">
+        <button id="btnScissor" onclick="onSelect('scissor')">
+          <img src="./assets/images/scissor.png" alt="scissor" />
+        </button>
+
+        <button id="btnPaper" onclick="onSelect('paper')">
+          <img src="./assets/images/paper.png" alt="paper" />
+        </button>
+
+        <button id="btnStone" onclick="onSelect('stone')">
+          <img src="./assets/images/stone.png" alt="stone" />
+        </button>
+      </div>
+    </div>
+    <script>
+      var btnScissor = document.getElementById("btnScissor");
+      var btnPaper = document.getElementById("btnPaper");
+      var btnStone = document.getElementById("btnStone");
+
+      var pcScissor = document.getElementById("pcScissor");
+      var pcPaper = document.getElementById("pcPaper");
+      var pcStone = document.getElementById("pcStone");
+
+      var result = document.getElementById("result");
+
+      const posibilities = {
+        scissor: {
+          stone: true,
+          paper: false,
+          element: pcScissor,
+          image: "./assets/images/scissor.png",
+        },
+        paper: {
+          scissor: true,
+          stone: false,
+          element: pcPaper,
+          image: "./assets/images/paper.png",
+        },
+        stone: {
+          paper: true,
+          scissor: false,
+          element: pcStone,
+          image: "./assets/images/stone.png",
+        },
+      };
+
+      var computerSelect;
+
+      function onSelect(select) {
+        setTimeout(() => {
+          this.reset();
+
+          computerSelect = Object.keys(posibilities)[
+            Math.ceil(Math.random() * 3) - 1
+          ];
+
+          var selections = `Computador: ${computerSelect} Vs. Você: ${select}`;
+          var message;
+
+          if (`${computerSelect}` == select) {
+            message = "Empate!";
+          } else {
+            message = posibilities[computerSelect][select]
+              ? "Ganhou!"
+              : "Perdeu!";
+          }
+
+          posibilities[computerSelect].element.src =
+            posibilities[computerSelect].image;
+
+          result.innerText = message;
+
+          setTimeout(() => {
+            result.innerText = "Vamos de novo!";
+
+            this.reset();
+          }, 1000);
+        }, 200);
+      }
+
+      function reset() {
+        pcScissor.src = "./assets/images/computer.png";
+        pcPaper.src = "./assets/images/computer.png";
+        pcStone.src = "./assets/images/computer.png";
+      }
+    </script>
+  </body>
+</html>
